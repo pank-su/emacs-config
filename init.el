@@ -43,7 +43,8 @@
   :init
   (elpy-enable))
 
-(require 'git)
+
+(setq org-odt-preferred-output-format "docx")
 
 (use-package doom-modeline
   :ensure t
