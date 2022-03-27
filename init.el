@@ -1,22 +1,3 @@
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("79586dc4eb374231af28bbc36ba0880ed8e270249b07f814b0e6555bdcb71fab" default))
- '(package-selected-packages
-   '(async org-download org-attach-screenshot markdown-mode which-key dap-mode lsp-treemacs lsp-ivy helm-lsp lsp-ui lsp-mode doom-modeline org)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-(global-wakatime-mode)
-
-
 
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
@@ -59,6 +40,8 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+
+(use-package dracula-theme)
 (set-face-attribute 'default nil :font "JetBrains Mono" :height 100)
 (load-theme 'dracula t)
 
@@ -96,7 +79,8 @@
   (dashboard-setup-startup-hook))
 
 
-(setq dashboard-startup-banner "~/me/god.png")
+(setq dashboard-startup-banner "~/.emacs.d/me/god.png")
+
 
 (use-package markdown-mode
   :ensure t
@@ -138,7 +122,51 @@ same directory as the org-buffer and insert a link to this file."
     (require 'org-download))
 
 (require 'org-download)
-
-;; Drag-and-drop to `dired`
 (add-hook 'dired-mode-hook 'org-download-enable)
-  
+
+(use-package elcord)
+(require 'elcord)
+(elcord-mode)
+
+
+(use-package steam)
+(setq steam-username "Super_Su_Vova_Petrov")
+;; Drag-and-drop to `dired`
+
+(use-package flycheck)
+(global-flycheck-mode)
+
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (c++-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+;; optionally
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-treemacs)
+
+(use-package wakatime-mode
+  :init
+  (setq wakatime-api-key "43b92841-41c0-4ecb-b7f2-a8890a65608f"))
+
+(global-wakatime-mode)
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(lsp-treemacs org-download markdown-mode wakatime-mode use-package ivy elpy dracula-theme doom-modeline dashboard command-log-mode)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
