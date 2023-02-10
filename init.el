@@ -3,24 +3,14 @@
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
-;; backwards compatibility as default-buffer-file-coding-system
-;; is deprecated in 23.2.
-(if (boundp 'buffer-file-coding-system)
-    (setq-default buffer-file-coding-system 'utf-8)
-  (setq default-buffer-file-coding-system 'utf-8))
-
-;; Treat clipboard input as UTF-8 string first; compound text next, etc.
-(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+(set-language-environment "UTF-8")
 
 
-
-(org-babel-do-load-languages
- 'org-babel-load-languages '((C . t)))
- 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)          ; Disable the toolbar
 
-;; Initialize package sources
+
+
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -31,80 +21,131 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 (unless package-archive-contents
- (package-refresh-contents))
+  (package-refresh-contents))
+
 ;; Initialize use-package on non-Linux platforms
 (unless (package-installed-p 'use-package)
    (package-install 'use-package))
 
+(add-to-list 'package-archives
+           '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
 
 (require 'use-package)
+
+(put 'use-package 'lisp-indent-function 1)
+
+(use-package use-package-core
+  :custom
+  ;; (use-package-verbose t)
+  ;; (use-package-minimum-reported-time 0.005)
+  (use-package-enable-imenu-support t))
+
+(use-package gcmh
+  :ensure t
+  :demand t
+  :config
+  (gcmh-mode 1))
+
+(use-package system-packages
+  :ensure t
+  :custom
+  (system-packages-noconfirm t))
+
+(use-package use-package-ensure-system-package :ensure t)
+
 (setq use-package-always-ensure t)
 
 
-(use-package dracula-theme)
+(use-package org-modern)
+;; Option 1: Per buffer
+(add-hook 'org-mode-hook #'org-modern-mode)
+(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+
+
+
+;; (use-package dracula-theme)
 (set-face-attribute 'default nil :font "JetBrains Mono" :height 100)
-(load-theme 'dracula t)
+;; (load-theme 'dracula t)
 
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)	
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
- 
+(use-package material-theme)
+(load-theme 'material-light t)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((plantuml . t)))
+
+(setq org-plantuml-jar-path "~/.emacs.d/plantuml.jar")
 
 
 
-(setq org-odt-preferred-output-format "docx")
-(setq inhibit-compacting-font-caches t)
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
+(use-package ox-reveal)
 
-(use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook))
+(setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
 
 
-(setq dashboard-startup-banner "~/.emacs.d/me/god.png")
+
+(setq org-latex-title-command (concat
+			       "\\begin{titlepage}\n\n"
+			       "\\centering{ГУАП}\n\n"
+			       "\\vspace{32pt}\n\n"
+			       "\\centering{ФАКУЛЬТЕТ СРЕДНЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ}\n\n"
+			       "\\vspace{60pt}\n\n"
+			       "\\raggedright{ОТЧЕТ \\\\
+ЗАЩИЩЕН С ОЦЕНКОЙ}\n"
+			       "\\vspace{14pt}\n\n"
+			       "\\raggedright{ПРЕПОДАВАТЕЛЬ}\n\n"
+			       "\\vspace{12pt}\n\n"
+			       "\\begin{tabularx}{\\textwidth}{ >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X }\n"
+			       "\t преподаватель & & %d \\\\ \n"
+			       "\t \\hrulefill & \\hrulefill & \\hrulefill \\\\ \n"
+			       "\\footnotesize{должность, уч. степень, звание} & \\footnotesize{подпись, дата} & \\footnotesize{инициалы, фамилия} \\\\ \n"
+			       "\\end{tabularx} \n \n"
+			       "\\vspace{48pt} \n\n"
+			       "\\centering{ОТЧЕТЫ О ЛАБОРАТОРНЫХ РАБОТАХ} \n\n"
+			       "\\vspace{76pt} \n\n"
+			       "\\centering{По дисциплине: %t} \n\n"
+			       "\\vspace*{\\fill} \n\n"
+			       "\\raggedright{РАБОТУ ВЫПОЛНИЛ} \n\n"
+			       "\\vspace{10pt} \n\n"
+			       "\\begin{tabularx}{\\textwidth}{>{\\raggedright\\arraybackslash}X  >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X }\n"
+			       "\t СТУДЕНТ ГР. № & 021к & & %a \\\\ \n"
+			       "\t & \\hrulefill & \\hrulefill & \\hrulefill \\\\ \n"
+			       "\t &  & \\footnotesize{подпись, дата} & \\footnotesize{инициалы, фамилия} \\\\ \n"
+			       "\\end{tabularx} \n \n"
+			       "\\vspace*{\\fill} \n\n"
+			       "\\centering{Санкт-Петербург \\the\\year} \n\n"
+			       "\\end{titlepage}\n"
+			       ))
+
+(setq org-latex-toc-command "\n\\tableofcontents \\clearpage\n")
+
+(setq org-latex-listings 'minted
+      org-latex-packages-alist '(("" "minted"))
+      org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	"pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+(setq org-latex-minted-options '(("breaklines" "true")
+                                 ("breakanywhere" "true")))
 
 
-(use-package markdown-mode
-  :ensure t
-  :mode ("README\\.md\\'" . gfm-mode)
-  :init (setq markdown-command "multimarkdown"))
+(use-package f)
 
-(autoload 'markdown-mode "markdown-mode"
-   "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist
-             '("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\)\\'" . markdown-mode))
+(defun my-latex-filter-continue-string (text backend info)
+  "Ensure \"_\" are properly handled in LaTeX export."
+  (progn
+  (if (org-export-derived-backend-p backend 'latex)
+      (replace-regexp-in-string "Continued on next page" "Продолжение на следующей странице" (replace-regexp-in-string "Continued from previous page" "Продолжение с предыдущей страницы" text))
+      (text))
+  ))
 
-(defun my-org-screenshot ()
-  "Take a screenshot into a time stamped unique-named file in the
-same directory as the org-buffer and insert a link to this file."
-  (interactive)
-  (setq filename
-        (concat
-         (make-temp-name
-          (concat (buffer-file-name)
-                  "_"
-                  (format-time-string "%Y%m%d_%H%M%S_")) ) ".png"))
-  (call-process "magick" nil nil nil "clipboard:" "\""  filename "\"")
-  (insert (concat "[[" filename "]]"))
-  (org-display-inline-images))
+
+(add-to-list 'org-export-filter-table-functions
+             'my-latex-filter-continue-string)
+
+
 
 (use-package org-download
     :after org
@@ -121,49 +162,104 @@ same directory as the org-buffer and insert a link to this file."
     :config
     (require 'org-download))
 
+
 (require 'org-download)
 (add-hook 'dired-mode-hook 'org-download-enable)
 
-(use-package elcord)
-(require 'elcord)
-(elcord-mode)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((sql . t)
+   (java . t)))
 
 
-(use-package steam)
-(setq steam-username "Super_Su_Vova_Petrov")
-;; Drag-and-drop to `dired`
+(use-package activity-watch-mode)
 
-(use-package flycheck)
-(global-flycheck-mode)
+(global-activity-watch-mode)
 
-(use-package lsp-mode
-  :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (c++-mode . lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
+;; My library
+;; (use-package notion-org
+  ;; :load-path "C:/Users/user/Desktop/notion-org/")
 
-;; optionally
-(use-package lsp-ui :commands lsp-ui-mode)
-(use-package lsp-treemacs)
+(use-package company
+  :config (global-company-mode))
 
-(use-package wakatime-mode
-  :init
-  (setq wakatime-api-key "43b92841-41c0-4ecb-b7f2-a8890a65608f"))
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
 
-(global-wakatime-mode)
 
+(setq dashboard-startup-banner "~/.emacs.d/me/god.png")
+
+(use-package magit)
+
+(setq org-publish-project-alist '(("org"
+				   :base-directory "c:/Users/user/Desktop/sem_6"
+				   :base-extension "org"
+				   :recursive t
+				   :publishing-function org-html-publish-to-html
+				   :publishing-directory "C:/Users/user/Desktop/sem_6/publ")))
+
+(defun my-org-confirm-babel-evaluate (lang body)
+  (not (string= lang "sql")))  ;don't ask for ditaa
+(setq org-confirm-babel-evaluate #'my-org-confirm-babel-evaluate)
+
+(setq org-babel-default-header-args:sql '(
+					  (:dbuser . "org-mode")
+					  (:dbpassword . "org-mode")
+					  ))
+
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
+(use-package 'tree-sitter)
+(use-package 'tree-sitter-langs)
+
+(require 'tree-sitter)
+(require 'tree-sitter-langs)
+(global-tree-sitter-mode)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-export-in-background t)
+ '(org-latex-classes
+   '(("extarticle" "\\documentclass[14pt]{extarticle}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("article" "\\documentclass[11pt]{article}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("report" "\\documentclass[11pt]{report}"
+      ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+     ("book" "\\documentclass[11pt]{book}"
+      ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+ '(org-latex-default-table-environment "longtable")
+ '(org-latex-minted-options
+   '(("breaklines" "true")
+     ("float" "t")
+     ("breakanywhere" "true")
+     ("fontsize" "\\footnotesize")))
  '(package-selected-packages
-   '(lsp-treemacs org-download markdown-mode wakatime-mode use-package ivy elpy dracula-theme doom-modeline dashboard command-log-mode)))
+   '(csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
+ '(warning-suppress-log-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
