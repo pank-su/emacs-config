@@ -25,13 +25,6 @@
 (unless (package-installed-p 'use-package)
    (package-install 'use-package))
 
-<<<<<<< HEAD
-=======
-(add-to-list 'package-archives
-           '("melpa-stable" . "https://stable.melpa.org/packages/"))
-(add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
-
->>>>>>> 1a5c78a9466c8526a423ee2435cf270569cfd64d
 (require 'use-package)
 
 (put 'use-package 'lisp-indent-function 1)
@@ -76,17 +69,9 @@
  'org-babel-load-languages
  '((plantuml . t)))
 
-<<<<<<< HEAD
-
-(setq-default tab-width 4)
-=======
 (setq org-plantuml-jar-path "~/.emacs.d/plantuml.jar")
 
->>>>>>> 1a5c78a9466c8526a423ee2435cf270569cfd64d
 
-(setq org-plantuml-jar-path "~/.emacs.d/plantuml.jar")
-
-<<<<<<< HEAD
 
 
 (use-package ox-reveal)
@@ -152,8 +137,6 @@
 (add-to-list 'org-export-filter-table-functions
              'my-latex-filter-continue-string)
 
-
-=======
 (use-package ox-reveal)
 
 (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
@@ -221,8 +204,6 @@
              'my-latex-filter-continue-string)
 
 
->>>>>>> 1a5c78a9466c8526a423ee2435cf270569cfd64d
-
 (use-package org-download
     :after org
     :defer nil
@@ -245,14 +226,11 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((sql . t)
-<<<<<<< HEAD
    (java . t)
    (kotlin . t)
    (shell . t)
    ))
 
-=======
-   (java . t)))
 
 
 (use-package activity-watch-mode)
@@ -273,7 +251,6 @@
 
 
 (setq dashboard-startup-banner "~/.emacs.d/me/god.png")
->>>>>>> 1a5c78a9466c8526a423ee2435cf270569cfd64d
 
 (use-package magit)
 
@@ -378,10 +355,7 @@
 (use-package 'tree-sitter)
 (use-package 'tree-sitter-langs)
 
-(require 'tree-sitter)
-(require 'tree-sitter-langs)
 (global-tree-sitter-mode)
->>>>>>> 1a5c78a9466c8526a423ee2435cf270569cfd64d
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -391,7 +365,6 @@
  '(org-export-in-background t)
  '(org-latex-classes
    '(("extarticle" "\\documentclass[14pt]{extarticle}"
-<<<<<<< HEAD
 	  ("\\section{%s}" . "\\section*{%s}")
 	  ("\\subsection{%s}" . "\\subsection*{%s}")
 	  ("\\subsubsection{%s}" . "\\subsubsection{%s}")
@@ -423,39 +396,6 @@
 	 ("fontsize" "\\footnotesize")))
  '(package-selected-packages
    '(gradle-mode csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
-=======
-      ("\\section{%s}" . "\\section*{%s}")
-      ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection{%s}")
-      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-     ("article" "\\documentclass[11pt]{article}"
-      ("\\section{%s}" . "\\section*{%s}")
-      ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-     ("report" "\\documentclass[11pt]{report}"
-      ("\\part{%s}" . "\\part*{%s}")
-      ("\\chapter{%s}" . "\\chapter*{%s}")
-      ("\\section{%s}" . "\\section*{%s}")
-      ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-     ("book" "\\documentclass[11pt]{book}"
-      ("\\part{%s}" . "\\part*{%s}")
-      ("\\chapter{%s}" . "\\chapter*{%s}")
-      ("\\section{%s}" . "\\section*{%s}")
-      ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
- '(org-latex-default-table-environment "longtable")
- '(org-latex-minted-options
-   '(("breaklines" "true")
-     ("float" "t")
-     ("breakanywhere" "true")
-     ("fontsize" "\\footnotesize")))
- '(package-selected-packages
-   '(csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
->>>>>>> 1a5c78a9466c8526a423ee2435cf270569cfd64d
  '(warning-suppress-log-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
