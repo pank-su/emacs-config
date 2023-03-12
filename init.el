@@ -254,7 +254,6 @@
 
 (use-package magit)
 
-<<<<<<< HEAD
 ;; (use-package activity-watch-mode)
 
 ;; (global-activity-watch-mode)
@@ -331,7 +330,7 @@
 (require 'google-translate-smooth-ui)
 (global-set-key "\C-ct" 'google-translate-smooth-translate)
 (setq google-translate-default-target-language "ru") 
-=======
+
 (setq org-publish-project-alist '(("org"
 				   :base-directory "c:/Users/user/Desktop/sem_6"
 				   :base-extension "org"
