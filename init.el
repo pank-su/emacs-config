@@ -351,8 +351,8 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
-(use-package 'tree-sitter)
-(use-package 'tree-sitter-langs)
+(use-package tree-sitter)
+(use-package tree-sitter-langs)
 
 (global-tree-sitter-mode)
 
