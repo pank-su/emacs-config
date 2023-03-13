@@ -115,15 +115,6 @@
 
 (setq org-latex-toc-command "\n\\tableofcontents \\clearpage\n")
 
-(setq org-latex-listings 'minted
-      org-latex-packages-alist '(("" "minted"))
-      org-latex-pdf-process
-      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
-(setq org-latex-minted-options '(("breaklines" "true")
-                                 ("breakanywhere" "true")))
-
 
 (use-package f)
 
@@ -137,46 +128,7 @@
 (add-to-list 'org-export-filter-table-functions
              'my-latex-filter-continue-string)
 
-(use-package ox-reveal)
 
-(setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
-
-
-
-(setq org-latex-title-command (concat
-			       "\\begin{titlepage}\n\n"
-			       "\\centering{ГУАП}\n\n"
-			       "\\vspace{32pt}\n\n"
-			       "\\centering{ФАКУЛЬТЕТ СРЕДНЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ}\n\n"
-			       "\\vspace{60pt}\n\n"
-			       "\\raggedright{ОТЧЕТ \\\\
-ЗАЩИЩЕН С ОЦЕНКОЙ}\n"
-			       "\\vspace{14pt}\n\n"
-			       "\\raggedright{ПРЕПОДАВАТЕЛЬ}\n\n"
-			       "\\vspace{12pt}\n\n"
-			       "\\begin{tabularx}{\\textwidth}{ >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X }\n"
-			       "\t преподаватель & & %d \\\\ \n"
-			       "\t \\hrulefill & \\hrulefill & \\hrulefill \\\\ \n"
-			       "\\footnotesize{должность, уч. степень, звание} & \\footnotesize{подпись, дата} & \\footnotesize{инициалы, фамилия} \\\\ \n"
-			       "\\end{tabularx} \n \n"
-			       "\\vspace{48pt} \n\n"
-			       "\\centering{ОТЧЕТЫ О ЛАБОРАТОРНЫХ РАБОТАХ} \n\n"
-			       "\\vspace{76pt} \n\n"
-			       "\\centering{По дисциплине: %t} \n\n"
-			       "\\vspace*{\\fill} \n\n"
-			       "\\raggedright{РАБОТУ ВЫПОЛНИЛ} \n\n"
-			       "\\vspace{10pt} \n\n"
-			       "\\begin{tabularx}{\\textwidth}{>{\\raggedright\\arraybackslash}X  >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X }\n"
-			       "\t СТУДЕНТ ГР. № & 021к & & %a \\\\ \n"
-			       "\t & \\hrulefill & \\hrulefill & \\hrulefill \\\\ \n"
-			       "\t &  & \\footnotesize{подпись, дата} & \\footnotesize{инициалы, фамилия} \\\\ \n"
-			       "\\end{tabularx} \n \n"
-			       "\\vspace*{\\fill} \n\n"
-			       "\\centering{Санкт-Петербург \\the\\year} \n\n"
-			       "\\end{titlepage}\n"
-			       ))
-
-(setq org-latex-toc-command "\n\\tableofcontents \\clearpage\n")
 
 (setq org-latex-listings 'minted
       org-latex-packages-alist '(("" "minted"))
@@ -189,19 +141,6 @@
                                  ("breakanywhere" "true")))
 
 
-(use-package f)
-
-(defun my-latex-filter-continue-string (text backend info)
-  "Ensure \"_\" are properly handled in LaTeX export."
-  (progn
-  (if (org-export-derived-backend-p backend 'latex)
-      (replace-regexp-in-string "Continued on next page" "Продолжение на следующей странице" (replace-regexp-in-string "Continued from previous page" "Продолжение с предыдущей страницы" text))
-      (text))
-  ))
-
-
-(add-to-list 'org-export-filter-table-functions
-             'my-latex-filter-continue-string)
 
 
 (use-package org-download
@@ -300,8 +239,6 @@
 (use-package tree-sitter)
 (use-package tree-sitter-langs)
 
-(require 'tree-sitter)
-(require 'tree-sitter-langs)
 (global-tree-sitter-mode)
 
 (use-package lsp-mode
@@ -333,13 +270,6 @@
 (global-set-key "\C-ct" 'google-translate-smooth-translate)
 (setq google-translate-default-target-language "ru") 
 
-(setq org-publish-project-alist '(("org"
-				   :base-directory "c:/Users/user/Desktop/sem_6"
-				   :base-extension "org"
-				   :recursive t
-				   :publishing-function org-html-publish-to-html
-				   :publishing-directory "C:/Users/user/Desktop/sem_6/publ")))
-
 (defun my-org-confirm-babel-evaluate (lang body)
   (not (string= lang "sql")))  ;don't ask for ditaa
 (setq org-confirm-babel-evaluate #'my-org-confirm-babel-evaluate)
@@ -350,11 +280,7 @@
 					  ))
 
 
-(use-package company-box
-  :hook (company-mode . company-box-mode))
-
-(use-package tree-sitter)
-(use-package tree-sitter-langs)
+;; (setq org-latex-image-default-option '(("float" "wrap")))
 
 (global-tree-sitter-mode)
 
