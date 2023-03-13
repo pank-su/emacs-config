@@ -223,6 +223,8 @@
 (require 'org-download)
 (add-hook 'dired-mode-hook 'org-download-enable)
 
+(use-package ob-kotlin)
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((sql . t)
@@ -364,35 +366,35 @@
  '(org-export-in-background t)
  '(org-latex-classes
    '(("extarticle" "\\documentclass[14pt]{extarticle}"
-	  ("\\section{%s}" . "\\section*{%s}")
-	  ("\\subsection{%s}" . "\\subsection*{%s}")
-	  ("\\subsubsection{%s}" . "\\subsubsection{%s}")
-	  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-	 ("article" "\\documentclass[11pt]{article}"
-	  ("\\section{%s}" . "\\section*{%s}")
-	  ("\\subsection{%s}" . "\\subsection*{%s}")
-	  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-	  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-	 ("report" "\\documentclass[11pt]{report}"
-	  ("\\part{%s}" . "\\part*{%s}")
-	  ("\\chapter{%s}" . "\\chapter*{%s}")
-	  ("\\section{%s}" . "\\section*{%s}")
-	  ("\\subsection{%s}" . "\\subsection*{%s}")
-	  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-	 ("book" "\\documentclass[11pt]{book}"
-	  ("\\part{%s}" . "\\part*{%s}")
-	  ("\\chapter{%s}" . "\\chapter*{%s}")
-	  ("\\section{%s}" . "\\section*{%s}")
-	  ("\\subsection{%s}" . "\\subsection*{%s}")
-	  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("article" "\\documentclass[11pt]{article}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("report" "\\documentclass[11pt]{report}"
+      ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+     ("book" "\\documentclass[11pt]{book}"
+      ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
  '(org-latex-default-table-environment "longtable")
  '(org-latex-minted-options
    '(("breaklines" "true")
-	 ("float" "t")
-	 ("breakanywhere" "true")
-	 ("fontsize" "\\footnotesize")))
+     ("float" "t")
+     ("breakanywhere" "true")
+     ("fontsize" "\\footnotesize")))
  '(package-selected-packages
    '(gradle-mode csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
  '(warning-suppress-log-types '((comp))))
@@ -402,3 +404,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'downcase-region 'disabled nil)
