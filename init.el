@@ -179,7 +179,6 @@
     (add-hook 'dired-mode-hook 'org-download-enable)
     )
 
-
 ;; My library
 ;; (use-package notion-org
   ;; :load-path "C:/Users/user/Desktop/notion-org/")
@@ -250,3 +249,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'downcase-region 'disabled nil)
