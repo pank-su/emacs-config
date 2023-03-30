@@ -1,0 +1,3 @@
+[submodule "org-ai"]
+	path = org-ai
+	url = https://github.com/rksm/org-ai
