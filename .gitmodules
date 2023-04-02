@@ -1,3 +1,6 @@
 [submodule "org-ai"]
 	path = org-ai
 	url = https://github.com/rksm/org-ai
+[submodule "ox-gost"]
+	path = ox-gost
+	url = https://github.com/pank-su/ox-gost.git

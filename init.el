@@ -59,79 +59,11 @@
 
 (setq org-plantuml-jar-path "~/.emacs.d/plantuml.jar")
 
-(setq org-latex-classes
-   '(("extarticle" "\\documentclass[14pt]{extarticle}"
-	  ("\\section{%s}" . "\\section*{%s}")
-	  ("\\subsection{%s}" . "\\subsection*{%s}")
-	  ("\\subsubsection{%s}" . "\\subsubsection{%s}")
-	  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-	 ("article" "\\documentclass[11pt]{article}"
-	  ("\\section{%s}" . "\\section*{%s}")
-	  ("\\subsection{%s}" . "\\subsection*{%s}")
-	  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-	  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-	 ("report" "\\documentclass[11pt]{report}"
-	  ("\\part{%s}" . "\\part*{%s}")
-	  ("\\chapter{%s}" . "\\chapter*{%s}")
-	  ("\\section{%s}" . "\\section*{%s}")
-	  ("\\subsection{%s}" . "\\subsection*{%s}")
-	  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-	 ("book" "\\documentclass[11pt]{book}"
-	  ("\\part{%s}" . "\\part*{%s}")
-	  ("\\chapter{%s}" . "\\chapter*{%s}")
-	  ("\\section{%s}" . "\\section*{%s}")
-	  ("\\subsection{%s}" . "\\subsection*{%s}")
-	  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
-(setq
-   org-export-in-background t
-   org-latex-minted-options '(("breaklines" "true")
-	 ("float" "t")
-	 ("breakanywhere" "true")
-	 ("fontsize" "\\footnotesize"))
-    org-latex-default-table-environment "longtable")
 
 (use-package ox-reveal
   :config (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js"))
 
-
-
-(setq org-latex-title-command (concat
-			       "\\begin{titlepage}\n\n"
-			       "\\centering{ГУАП}\n\n"
-			       "\\vspace{32pt}\n\n"
-			       "\\centering{ФАКУЛЬТЕТ СРЕДНЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ}\n\n"
-			       "\\vspace{60pt}\n\n"
-			       "\\raggedright{ОТЧЕТ \\\\
-ЗАЩИЩЕН С ОЦЕНКОЙ}\n"
-			       "\\vspace{14pt}\n\n"
-			       "\\raggedright{ПРЕПОДАВАТЕЛЬ}\n\n"
-			       "\\vspace{12pt}\n\n"
-			       "\\begin{tabularx}{\\textwidth}{ >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X }\n"
-			       "\t преподаватель & & %d \\\\ \n"
-			       "\t \\hrulefill & \\hrulefill & \\hrulefill \\\\ \n"
-			       "\\footnotesize{должность, уч. степень, звание} & \\footnotesize{подпись, дата} & \\footnotesize{инициалы, фамилия} \\\\ \n"
-			       "\\end{tabularx} \n \n"
-			       "\\vspace{48pt} \n\n"
-			       "\\centering{ОТЧЕТЫ О ЛАБОРАТОРНЫХ РАБОТАХ} \n\n"
-			       "\\vspace{76pt} \n\n"
-			       "\\centering{По дисциплине: %t} \n\n"
-			       "\\vspace*{\\fill} \n\n"
-			       "\\raggedright{РАБОТУ ВЫПОЛНИЛ} \n\n"
-			       "\\vspace{10pt} \n\n"
-			       "\\begin{tabularx}{\\textwidth}{>{\\raggedright\\arraybackslash}X  >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X >{\\centering\\arraybackslash}X }\n"
-			       "\t СТУДЕНТ ГР. № & 021к & & %a \\\\ \n"
-			       "\t & \\hrulefill & \\hrulefill & \\hrulefill \\\\ \n"
-			       "\t &  & \\footnotesize{подпись, дата} & \\footnotesize{инициалы, фамилия} \\\\ \n"
-			       "\\end{tabularx} \n \n"
-			       "\\vspace*{\\fill} \n\n"
-			       "\\centering{Санкт-Петербург \\the\\year} \n\n"
-			       "\\end{titlepage}\n"
-			       ))
-
-(setq org-latex-toc-command "\n\\tableofcontents \\clearpage\n")
 
 
 (use-package f)
@@ -146,19 +78,8 @@
   )
 
 
-(add-to-list 'org-export-filter-table-functions
-             'my-latex-filter-continue-string)
-
-
-
-(setq org-latex-listings 'minted
-      org-latex-packages-alist '(("" "minted"))
-      org-latex-pdf-process
-      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	"pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
-
+;; (add-to-list 'org-export-filter-table-functions
+             ;; 'my-latex-filter-continue-string)
 
 
 
@@ -226,6 +147,9 @@
 
 ;; (setq org-latex-image-default-option '(("float" "wrap")))
 
+(use-package ox-gost
+  :load-path "./ox-gost")
+
 (use-package org-ai
   :load-path "./org-ai"
   :commands (org-ai-mode)
@@ -240,6 +164,20 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-latex-default-packages-alist
+   '(("AUTO" "inputenc" t
+      ("pdflatex"))
+     ("T2A" "fontenc" t
+      ("pdflatex"))
+     ("" "graphicx" t nil)
+     ("" "longtable" nil nil)
+     ("" "wrapfig" nil nil)
+     ("" "rotating" nil nil)
+     ("normalem" "ulem" t nil)
+     ("" "amsmath" t nil)
+     ("" "amssymb" t nil)
+     ("" "capt-of" nil nil)
+     ("" "hyperref" nil nil)))
  '(package-selected-packages
    '(gradle-mode csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
  '(warning-suppress-log-types '((comp))))
