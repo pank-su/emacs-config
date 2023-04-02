@@ -33,6 +33,7 @@
 
 (setq use-package-always-ensure t)
 
+(use-package ob-kotlin)
 
 (use-package org-modern)
 ;; Option 1: Per buffer
