@@ -160,12 +160,15 @@
   (add-hook 'org-mode-hook #'org-ai-mode)
   )
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-latex-default-packages-alist
+(use-package engrave-faces
+  :config (setq engrave-faces-preset-styles (engrave-faces-generate-preset)
+	       )
+  )
+
+(setq org-latex-default-figure-position "H"
+      org-export-default-language "ru"
+      
+      org-latex-default-packages-alist
    '(("AUTO" "inputenc" t
       ("pdflatex"))
      ("T2A" "fontenc" t
@@ -179,6 +182,12 @@
      ("" "amssymb" t nil)
      ("" "capt-of" nil nil)
      ("" "hyperref" nil nil)))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(package-selected-packages
    '(gradle-mode csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
  '(warning-suppress-log-types '((comp))))
