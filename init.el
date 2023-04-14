@@ -55,6 +55,7 @@
    (kotlin . t)
    (shell . t)
    (plantuml . t)
+   (python . t)
   )
  )
 
@@ -149,7 +150,12 @@
 ;; (setq org-latex-image-default-option '(("float" "wrap")))
 
 (use-package ox-gost
-  :load-path "./ox-gost")
+  :load-path "./ox-gost"
+  :config (setq org-gost-education-organization "ГУАП"
+	        org-gost-department "ФАКУЛЬТЕТ СРЕДНЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ"
+		org-gost-teacher-position "преподаватель"
+		org-gost-city "Санкт-Петербург"
+		org-gost-group "021к"))
 
 (use-package org-ai
   :load-path "./org-ai"
@@ -189,7 +195,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(gradle-mode csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
+   '(tree-mode company-c-headers kotlin-mode elcord gradle-mode csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
  '(warning-suppress-log-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
