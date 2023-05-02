@@ -149,6 +149,9 @@
 
 ;; (setq org-latex-image-default-option '(("float" "wrap")))
 
+
+
+
 (use-package ox-gost
   :load-path "./ox-gost"
   :config (setq org-gost-education-organization "ГУАП"
@@ -171,6 +174,19 @@
 	       )
   )
 
+;; (use-package nano-modeline
+;;:config (nano-modeline-mode))
+
+(use-package smooth-scroll)
+
+(use-package nyan-mode)
+
+(use-package svg-lib)
+
+(use-package fireplace)
+
+(use-package multiple-cursors)
+
 (setq org-latex-default-figure-position "H"
       org-export-default-language "ru"
       
@@ -179,6 +195,10 @@
       ("pdflatex"))
      ("T2A" "fontenc" t
       ("pdflatex"))
+     ("" "fontspec" t
+      ("xelatex"))
+     ;;("AUTO" "inputenc" t
+      ;;("XeLaTeX"))
      ("" "graphicx" t nil)
      ("" "longtable" nil nil)
      ("" "wrapfig" nil nil)
@@ -194,6 +214,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(inhibit-startup-screen t)
  '(package-selected-packages
    '(tree-mode company-c-headers kotlin-mode elcord gradle-mode csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
  '(warning-suppress-log-types '((comp))))
