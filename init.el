@@ -56,8 +56,12 @@
    (shell . t)
    (plantuml . t)
    (python . t)
+   (http . t)
   )
  )
+
+(setq max-lisp-eval-depth 10000)
+
 
 (setq org-plantuml-jar-path "~/.emacs.d/plantuml.jar")
 
@@ -189,13 +193,24 @@
      ("" "capt-of" nil nil)
      ("" "hyperref" nil nil)))
 
+(use-package dart-mode
+  ;; Optional
+  :hook (dart-mode . flutter-test-mode))
+
+(use-package flutter
+  :after dart-mode
+  :bind (:map dart-mode-map
+              ("C-M-x" . #'flutter-run-or-hot-reload))
+  :custom
+  (flutter-sdk-path "c:/src/flutter"))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(tree-mode company-c-headers kotlin-mode elcord gradle-mode csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
+   '(json-mode ob-http http tree-mode company-c-headers kotlin-mode elcord gradle-mode csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
  '(warning-suppress-log-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
