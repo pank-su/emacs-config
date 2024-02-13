@@ -1,15 +1,18 @@
 
+;; Базовая настройка
+
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 
+(set-face-attribute 'default nil :font "JetbrainsMono NF" :height 100)
 
 (scroll-bar-mode -1)
-(tool-bar-mode -1)          ; Disable the toolbar
+(tool-bar-mode -1)         
 
-
+;; Настройка use-package
 
 (require 'package)
 
@@ -27,26 +30,96 @@
    (package-install 'use-package))
 
 (require 'use-package)
-
-
 (use-package use-package-ensure-system-package :ensure t)
-
 (setq use-package-always-ensure t)
 
-(use-package ob-kotlin)
 
-(use-package org-modern)
-;; Option 1: Per buffer
-(add-hook 'org-mode-hook #'org-modern-mode)
-(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
 
-;; (use-package dracula-theme)
-(set-face-attribute 'default nil :font "JetBrains Mono" :height 100)
-;; (load-theme 'dracula t)
 
+;; Настройка темы и украшений
 (use-package material-theme)
 (load-theme 'material-light t)
 
+(use-package nerd-icons)
+
+;; Отображение начального экрана
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  :custom
+  (dashboard-banner-logo-title "pank-su Emacs")
+  (dashboard-center-content t)
+  (dashboard-display-icons-p t)
+  (dashboard-icon-type 'nerd-icons)
+  (dashboard-set-heading-icons t)
+  (dashboard-set-file-icons t)
+  ;; Картинка
+  (dashboard-startup-banner "~/.emacs.d/me/god.png")
+  ;; Цитатки
+  ( dashboard-footer-messages
+  '("Emacs - это не просто редактор, это образ жизни."
+    "Только Emacs может понять истинную глубину вашей души."
+    "С Emacs вы можете править код, писать стихи, и даже управлять миром."
+    "Vim? Кто это? Мы тут Emacs используем."
+    "Emacs настолько крут, что ему не нужен GUI."
+    "Если вы не можете понять Emacs, значит вы не достаточно умны."
+    "Emacs - это Сила."
+    "Emacs - это Матрица."
+    "Emacs готов к работе! А вы?"
+    "Наслаждайтесь Emacs! (Или не наслаждайтесь, это ваше дело.)"
+    "Emacs - лучший редактор для удаленной работы."
+    "Emacs поможет вам пережить пандемию."
+    "Emacs - ваш верный друг в эти непростые времена."
+    "Emacs - это не редактор, это динозавр."
+    "Emacs настолько тяжелый, что он может сломать ваш компьютер."
+    "Emacs - это черная дыра, из которой невозможно выбраться."
+    )
+  )
+)
+
+
+
+
+
+;; Для работы русских букв в сочетаниях клавиш
+(use-package char-fold
+  :custom
+  (char-fold-symmetric t)
+  (search-default-mode #'char-fold-to-regexp))
+(use-package reverse-im
+  :ensure t ; install `reverse-im' using package.el
+  :demand t ; always load it
+  :after char-fold ; but only after `char-fold' is loaded
+  :bind
+  ("M-T" . reverse-im-translate-word) ; fix a word in wrong layout
+  :custom
+  (reverse-im-char-fold t) ; use lax matching
+  (reverse-im-read-char-advice-function #'reverse-im-read-char-include)
+  (reverse-im-input-methods '("russian-computer")) ; translate these methods
+  :config
+  (reverse-im-mode t)) ; turn the mode on
+
+
+
+
+
+
+;; Настройка org-mode
+(use-package ob-kotlin)
+
+(use-package org-modern
+  :hook (org-mode-hook . org-modern-mode)
+  (org-agenda-finalize-hook . org-modern-agenda)
+  )
+
+(setq org-plantuml-jar-path "~/.emacs.d/plantuml.jar")
+
+(use-package ox-reveal
+  :config (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js"))
+
+
+;; Работа org-babel
 (org-babel-do-load-languages
  'org-babel-load-languages
  '(
@@ -59,32 +132,7 @@
   )
  )
 
-(setq org-plantuml-jar-path "~/.emacs.d/plantuml.jar")
-
-
-
-(use-package ox-reveal
-  :config (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js"))
-
-
-
-(use-package f)
-
-(defun my-latex-filter-continue-string (text backend info)
-  "Ensure \"_\" are properly handled in LaTeX export."
-  (when (org-export-derived-backend-p backend 'latex)
-    (string-replace "\\\\" "\\\\ \n \\hline" (replace-regexp-in-string "Continued on next page"
-								       "Продолжение на следующей странице"
-								       (replace-regexp-in-string "Continued from previous page"
-												 "Продолжение с предыдущей страницы" text))))
-  )
-
-
-;; (add-to-list 'org-export-filter-table-functions
-             ;; 'my-latex-filter-continue-string)
-
-
-
+;; Адекватная вставка картинок в org-mode
 (use-package org-download
     :after org
     :defer nil
@@ -102,32 +150,9 @@
     (add-hook 'dired-mode-hook 'org-download-enable)
     )
 
-;; My library
-;; (use-package notion-org
-  ;; :load-path "C:/Users/user/Desktop/notion-org/")
-
-(use-package company
-  :config (global-company-mode))
-
-(use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook))
-
-
-(setq dashboard-startup-banner "~/.emacs.d/me/god.png")
-
-(use-package magit)
-
-(setq org-publish-project-alist '(("org"
-				   :base-directory "c:/Users/user/Desktop/sem_6"
-				   :base-extension "org"
-				   :recursive t
-				   :publishing-function org-html-publish-to-html
-				   :publishing-directory "C:/Users/user/Desktop/sem_6/publ")))
-
+;; Правила безопасности org-babel 
 (defun my-org-confirm-babel-evaluate (lang body)
-  (not (string= lang "sql")))  ;don't ask for ditaa
+  (not (string= lang "sql"))) 
 (setq org-confirm-babel-evaluate #'my-org-confirm-babel-evaluate)
 
 (setq org-babel-default-header-args:sql '(
@@ -135,57 +160,53 @@
 					  (:dbpassword . "org-mode")
 					  ))
 
-
-(use-package company-box
-  :hook (company-mode . company-box-mode))
-
-(use-package google-translate)
-
-
-(require 'google-translate)
-(require 'google-translate-smooth-ui)
-(global-set-key "\C-ct" 'google-translate-smooth-translate)
-(setq google-translate-default-target-language "ru") 
-
-;; (setq org-latex-image-default-option '(("float" "wrap")))
-
-
-
-
-(use-package ox-gost
-  :load-path "./ox-gost"
-  :config (setq org-gost-education-organization "ГУАП"
-	        org-gost-department "ФАКУЛЬТЕТ СРЕДНЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ"
-		org-gost-teacher-position "преподаватель"
-		org-gost-city "Санкт-Петербург"
-		org-gost-group "021к"))
-
-(use-package org-ai
-  :load-path "./org-ai"
-  :commands (org-ai-mode)
-  :custom
-  (org-ai-openai-api-token "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")
-  :init
-  (add-hook 'org-mode-hook #'org-ai-mode)
-  )
-
+;; Отображение блоков кода в Latex с помощью данной билиотеки
 (use-package engrave-faces
   :config (setq engrave-faces-preset-styles (engrave-faces-generate-preset)
 	       )
   )
 
-;; (use-package nano-modeline
-;;:config (nano-modeline-mode))
+
+
+;; Подсказки
+(use-package company
+  :config (global-company-mode))
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
+(use-package magit)
+
+
+
+
+
+;; (setq org-latex-image-default-option '(("float" "wrap")))
+
+
+;;(use-package ox-gost
+  ;;:load-path "./ox-gost"
+  ;;:config (setq org-gost-education-organization "ГУАП"
+;;	        org-gost-department "ФАКУЛЬТЕТ СРЕДНЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ"
+;;		org-gost-teacher-position "преподаватель"
+;;		org-gost-city "Санкт-Петербург"
+;;		org-gost-group "021к"))
+
+
+
+
 
 (use-package smooth-scroll)
-
 (use-package nyan-mode)
-
 (use-package svg-lib)
-
 (use-package fireplace)
-
 (use-package multiple-cursors)
+(use-package kotlin-mode)
+(use-package elcord
+  :config (elcord-mode))
+(use-package gradle-mode)
+(use-package csv-mode)
+
 
 (setq org-latex-default-figure-position "H"
       org-export-default-language "ru"
@@ -197,8 +218,6 @@
       ("pdflatex"))
      ("" "fontspec" t
       ("xelatex"))
-     ;;("AUTO" "inputenc" t
-      ;;("XeLaTeX"))
      ("" "graphicx" t nil)
      ("" "longtable" nil nil)
      ("" "wrapfig" nil nil)
@@ -209,19 +228,18 @@
      ("" "capt-of" nil nil)
      ("" "hyperref" nil nil)))
 
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(tree-mode company-c-headers kotlin-mode elcord gradle-mode csv-mode htmlize csharp-mode magit dashboard company activity-watch-mode org-download ox-reveal dracula-theme org-modern use-package-ensure-system-package system-packages gcmh use-package))
- '(warning-suppress-log-types '((comp))))
+   '(csv-mode gradle-mode elcord use-package-ensure-system-package svg-lib smooth-scroll ox-reveal org-modern org-download ob-kotlin nyan-mode multiple-cursors material-theme magit kotlin-mode google-translate fireplace f engrave-faces dashboard company-box)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(put 'downcase-region 'disabled nil)
