@@ -38,7 +38,7 @@
 
 (use-package yascroll
   :config (global-yascroll-bar-mode 1)
-)
+  )
 
 ;; Настройка темы и украшений
 (use-package material-theme)
@@ -246,6 +246,17 @@
   :ensure t
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
+(use-package projectile
+  :config (projectile-mode +1)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+  )
+
+(use-package selectrum
+  :config (selectrum-mode +1))
+
+(use-package treemacs)
+(use-package treemacs-projectile)
 
 
 (setq org-latex-default-figure-position "H"
