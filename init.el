@@ -184,13 +184,13 @@
 ;; (setq org-latex-image-default-option '(("float" "wrap")))
 
 
-;;(use-package ox-gost
-  ;;:load-path "./ox-gost"
-  ;;:config (setq org-gost-education-organization "ГУАП"
-;;	        org-gost-department "ФАКУЛЬТЕТ СРЕДНЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ"
-;;		org-gost-teacher-position "преподаватель"
-;;		org-gost-city "Санкт-Петербург"
-;;		org-gost-group "021к"))
+(use-package ox-gost
+  :load-path "./ox-gost"
+  :config (setq org-gost-education-organization "ГУАП"
+	        org-gost-department "ФАКУЛЬТЕТ СРЕДНЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ"
+		org-gost-teacher-position "преподаватель"
+		org-gost-city "Санкт-Петербург"
+		org-gost-group "021к"))
 
 
 
