@@ -1,4 +1,3 @@
-
 ;; Базовая настройка
 
 (prefer-coding-system 'utf-8)
@@ -10,7 +9,10 @@
 (set-face-attribute 'default nil :font "JetbrainsMono NF" :height 100)
 
 (scroll-bar-mode -1)
-(tool-bar-mode -1)         
+(tool-bar-mode -1)
+
+(display-time-mode 1)
+(delete-selection-mode 1)
 
 ;; Настройка use-package
 
@@ -34,13 +36,18 @@
 (setq use-package-always-ensure t)
 
 
-
+(use-package yascroll
+  :config (global-yascroll-bar-mode 1)
+)
 
 ;; Настройка темы и украшений
 (use-package material-theme)
 (load-theme 'material-light t)
 
-(use-package nerd-icons)
+(use-package nerd-icons
+  :custom
+  (nerd-icons-font-family "JetbrainsMono NF")
+  (nerd-icons-scale-factor 1.3))
 
 ;; Отображение начального экрана
 (use-package dashboard
@@ -78,6 +85,35 @@
   )
 )
 
+(use-package centaur-tabs
+  :demand
+  :config
+  (centaur-tabs-mode t)
+  :custom
+  (centaur-tabs-set-icons t)
+  ;;(centaur-tabs-style "wave")
+  (centaur-tabs-set-modified-marker t)
+
+  :bind
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward))
+
+
+
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :custom (doom-modeline-major-mode-color-icon t)
+  (doom-modeline-icon t)
+  (doom-modeline-time-icon t)
+  (doom-modeline-time-live-icon t)
+  (doom-modeline-modal-modern-icon t)
+  (doom-modeline-env-version t)
+  (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+  (doom-modeline-lsp-icon t)
+  (doom-modeline-buffer-state-icon t)
+
+)
 
 
 
@@ -150,7 +186,7 @@
     (add-hook 'dired-mode-hook 'org-download-enable)
     )
 
-;; Правила безопасности org-babel 
+;; Правила безопасности org-babel
 (defun my-org-confirm-babel-evaluate (lang body)
   (not (string= lang "sql"))) 
 (setq org-confirm-babel-evaluate #'my-org-confirm-babel-evaluate)
@@ -206,6 +242,10 @@
   :config (elcord-mode))
 (use-package gradle-mode)
 (use-package csv-mode)
+(use-package flycheck
+  :ensure t
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 
 (setq org-latex-default-figure-position "H"
