@@ -6,7 +6,7 @@
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 
-(set-face-attribute 'default nil :font "JetbrainsMono NF" :height 100)
+(set-face-attribute 'default nil :font "JetbrainsMono NF" :height 130)
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -89,6 +89,7 @@
   :demand
   :config
   (centaur-tabs-mode t)
+  (centaur-tabs-group-by-projectile-project)
   :custom
   (centaur-tabs-set-icons t)
   ;;(centaur-tabs-style "wave")
@@ -220,6 +221,26 @@
 ;; (setq org-latex-image-default-option '(("float" "wrap")))
 
 
+(setq org-latex-default-figure-position "H"
+      org-export-default-language "ru"
+      
+      org-latex-default-packages-alist
+   '(("AUTO" "inputenc" t
+      ("pdflatex"))
+     ("T2A" "fontenc" t
+      ("pdflatex"))
+     ("" "fontspec" t
+      ("xelatex"))
+     ("" "graphicx" t nil)
+     ("" "longtable" nil nil)
+     ("" "wrapfig" nil nil)
+     ("" "rotating" nil nil)
+     ("normalem" "ulem" t nil)
+     ("" "amsmath" t nil)
+     ("" "amssymb" t nil)
+     ("" "capt-of" nil nil)
+     ("" "hyperref" nil nil)))
+
 (use-package ox-gost
   :load-path "./ox-gost"
   :config (setq org-gost-education-organization "ГУАП"
@@ -257,27 +278,11 @@
 
 (use-package treemacs)
 (use-package treemacs-projectile)
-
-
-(setq org-latex-default-figure-position "H"
-      org-export-default-language "ru"
-      
-      org-latex-default-packages-alist
-   '(("AUTO" "inputenc" t
-      ("pdflatex"))
-     ("T2A" "fontenc" t
-      ("pdflatex"))
-     ("" "fontspec" t
-      ("xelatex"))
-     ("" "graphicx" t nil)
-     ("" "longtable" nil nil)
-     ("" "wrapfig" nil nil)
-     ("" "rotating" nil nil)
-     ("normalem" "ulem" t nil)
-     ("" "amsmath" t nil)
-     ("" "amssymb" t nil)
-     ("" "capt-of" nil nil)
-     ("" "hyperref" nil nil)))
+(use-package yasnippet
+  :config
+  (yas-global-mode 1))
+(use-package yasnippet-snippets
+  )
 
 
 
