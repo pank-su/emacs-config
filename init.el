@@ -35,6 +35,9 @@
 (use-package use-package-ensure-system-package :ensure t)
 (setq use-package-always-ensure t)
 
+(setq ispell-program-name "aspell")
+
+(setq ispell-dictionary "ru")
 
 (use-package yascroll
   :config (global-yascroll-bar-mode 1)
@@ -143,6 +146,19 @@
 
 
 ;; Настройка org-mode
+(setq org-edit-src-content-indentation 0)
+
+(use-package org-bullets
+  :config (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  )
+
+
+
+(with-eval-after-load 'org-mode
+  (define-key org-mode-map "\M-q" 'toggle-truncate-lines))
+
+(add-hook 'org-mode-hook 'flyspell-mode)
+
 (use-package ob-kotlin)
 
 (use-package org-modern
@@ -205,19 +221,6 @@
 
 
 
-;; Подсказки
-(use-package company
-  :config (global-company-mode))
-
-(use-package company-box
-  :hook (company-mode . company-box-mode))
-
-(use-package magit)
-
-
-
-
-
 ;; (setq org-latex-image-default-option '(("float" "wrap")))
 
 
@@ -252,15 +255,22 @@
 
 
 
+;; Подсказки
+(use-package company
+  :config (global-company-mode))
 
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
+;; Остальные полезные библиотеки
+(use-package magit)
 (use-package smooth-scroll)
 (use-package nyan-mode)
 (use-package svg-lib)
 (use-package fireplace)
 (use-package multiple-cursors)
 (use-package kotlin-mode)
-(use-package elcord
-  :config (elcord-mode))
+(use-package elcord)
 (use-package gradle-mode)
 (use-package csv-mode)
 (use-package flycheck
@@ -284,13 +294,20 @@
 (use-package yasnippet-snippets
   )
 
-
+(use-package eglot
+  :config
+  (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename)
+  (define-key eglot-mode-map (kbd "C-c o") 'eglot-code-action-organize-imports)
+  (define-key eglot-mode-map (kbd "C-c h") 'eldoc)
+  (define-key eglot-mode-map (kbd "<f6>") 'xref-find-definitions)
+)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-bullets-bullet-list '("" "󰦆" "" ""))
  '(package-selected-packages
    '(csv-mode gradle-mode elcord use-package-ensure-system-package svg-lib smooth-scroll ox-reveal org-modern org-download ob-kotlin nyan-mode multiple-cursors material-theme magit kotlin-mode google-translate fireplace f engrave-faces dashboard company-box)))
 (custom-set-faces
