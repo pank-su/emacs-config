@@ -63,6 +63,9 @@
   (dashboard-display-icons-p t)
   (dashboard-icon-type 'nerd-icons)
   (dashboard-set-heading-icons t)
+  (dashboard-items '((recents   . 5)
+                     (projects  . 5)
+                     (agenda    . 5)))
   (dashboard-set-file-icons t)
   ;; Картинка
   (dashboard-startup-banner "~/.emacs.d/me/god.png")
@@ -269,30 +272,65 @@
 (use-package svg-lib)
 (use-package fireplace)
 (use-package multiple-cursors)
+
+
 (use-package kotlin-mode)
+
+
 (use-package elcord)
-(use-package gradle-mode)
+(use-package gradle-mode
+  :config (gradle-mode 1))
 (use-package csv-mode)
 (use-package flycheck
   :ensure t
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
+
+(use-package flycheck-kotlin
+  :hook (kotlin-mode . flycheck-kotlin-setup))
+
+(use-package flycheck-inline
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
+
 (use-package projectile
   :config (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
   )
 
+
+(use-package rust-mode
+  :config
+  ;(setq rust-mode-treesitter-derive t)
+  (add-hook 'rust-mode-hook #'flycheck-rust-setup))
+
+(use-package which-key
+  :config
+  (setq which-key-idle-delay 1.0)
+  (which-key-mode))
+
 (use-package selectrum
   :config (selectrum-mode +1))
 
 (use-package treemacs)
-(use-package treemacs-projectile)
+(use-package treemacs-projectile
+  :config (setq projectile-switch-project-action #'treemacs))
 (use-package yasnippet
   :config
   (yas-global-mode 1))
 (use-package yasnippet-snippets
   )
+
+(use-package docker
+  :ensure t
+  :bind ("C-c d" . docker))
+
+(use-package dockerfile-mode)
+
+(use-package ros
+  :config
+  (setq ros-workspaces (list (ros-dump-workspace :tramp-prefix (format "/docker:root@%s:" "b9269ccc9e7d") :workspace "/ws" :extends '("/opt/ros/humble/")))))
 
 (use-package eglot
   :config
@@ -300,16 +338,39 @@
   (define-key eglot-mode-map (kbd "C-c o") 'eglot-code-action-organize-imports)
   (define-key eglot-mode-map (kbd "C-c h") 'eldoc)
   (define-key eglot-mode-map (kbd "<f6>") 'xref-find-definitions)
-)
+  (add-hook 'rust-mode-hook 'eglot-ensure)
+  (setq eglot-connect-timeout 999999)
+  )
+
+
+(add-to-list 'treesit-language-source-alist
+             '(typst "https://github.com/uben0/tree-sitter-typst"))
+(treesit-install-language-grammar 'typst)
+
+(use-package typst-ts-mode
+  :load-path "./typst-ts-mode"
+  :custom
+  ;; don't add "--open" if you'd like `watch` to be an error detector
+  (typst-ts-mode-watch-options "--open")
+  
+  ;; experimental settings (I'm the main dev, so I enable these)
+  (typst-ts-mode-enable-raw-blocks-highlight t)
+  (typst-ts-mode-highlight-raw-blocks-at-startup t))
+
+
+;;(use-package ros
+  ;;)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(flycheck-check-syntax-automatically
+   '(save idle-change idle-buffer-switch new-line mode-enabled))
  '(org-bullets-bullet-list '("" "󰦆" "" ""))
  '(package-selected-packages
-   '(csv-mode gradle-mode elcord use-package-ensure-system-package svg-lib smooth-scroll ox-reveal org-modern org-download ob-kotlin nyan-mode multiple-cursors material-theme magit kotlin-mode google-translate fireplace f engrave-faces dashboard company-box)))
+   '(flycheck-rust docker-compose-mode yaml-mode json-mode csv-mode gradle-mode elcord use-package-ensure-system-package svg-lib smooth-scroll ox-reveal org-modern org-download ob-kotlin nyan-mode multiple-cursors material-theme magit kotlin-mode google-translate fireplace f engrave-faces dashboard company-box)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

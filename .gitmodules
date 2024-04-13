@@ -1,3 +1,6 @@
 [submodule "ox-gost"]
 	path = ox-gost
 	url = https://github.com/pank-su/ox-gost.git
+[submodule "typst-ts-mode"]
+	path = typst-ts-mode
+	url = https://git.sr.ht/~meow_king/typst-ts-mode
