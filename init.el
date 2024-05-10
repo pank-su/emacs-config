@@ -6,7 +6,7 @@
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 
-(set-face-attribute 'default nil :font "JetbrainsMono NF" :height 130)
+(set-face-attribute 'default nil :font "Jetbrains Mono NL" :height 130)
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -49,8 +49,16 @@
 
 (use-package nerd-icons
   :custom
-  (nerd-icons-font-family "JetbrainsMono NF")
+  (nerd-icons-font-family "JetbrainsMono NFP")
   (nerd-icons-scale-factor 1.3))
+
+(use-package telega)
+
+(require 'telega-emacs-stories)
+
+(telega-emacs-stories-mode 1)
+
+(define-key telega-root-mode-map (kbd "v e") 'telega-view-emacs-stories)
 
 ;; Отображение начального экрана
 (use-package dashboard
@@ -62,15 +70,17 @@
   (dashboard-center-content t)
   (dashboard-display-icons-p t)
   (dashboard-icon-type 'nerd-icons)
-  (dashboard-set-heading-icons t)
-  (dashboard-items '((recents   . 5)
+  ;;(dashboard-set-heading-icons t)
+  (dashboard-items '(
+		     (recents   . 5)
                      (projects  . 5)
-                     (agenda    . 5)))
-  (dashboard-set-file-icons t)
+                     (agenda    . 5)
+		     ))
+  ;;(dashboard-set-file-icons t)
   ;; Картинка
   (dashboard-startup-banner "~/.emacs.d/me/god.png")
   ;; Цитатки
-  ( dashboard-footer-messages
+  (dashboard-footer-messages
   '("Emacs - это не просто редактор, это образ жизни."
     "Только Emacs может понять истинную глубину вашей души."
     "С Emacs вы можете править код, писать стихи, и даже управлять миром."
@@ -313,9 +323,12 @@
 (use-package selectrum
   :config (selectrum-mode +1))
 
-(use-package treemacs)
+(use-package treemacs
+  :config (treemacs-project-follow-mode))
+
 (use-package treemacs-projectile
-  :config (setq projectile-switch-project-action #'treemacs))
+  :config (setq projectile-switch-project-action #'treemacs-add-and-display-current-project-exclusively))
+
 (use-package yasnippet
   :config
   (yas-global-mode 1))
@@ -328,9 +341,9 @@
 
 (use-package dockerfile-mode)
 
-(use-package ros
-  :config
-  (setq ros-workspaces (list (ros-dump-workspace :tramp-prefix (format "/docker:root@%s:" "b9269ccc9e7d") :workspace "/ws" :extends '("/opt/ros/humble/")))))
+;;(use-package ros
+  ;;:config
+  ;;(setq ros-workspaces (list (ros-dump-workspace :tramp-prefix (format "/docker:root@%s:" "b9269ccc9e7d") :workspace "/ws" :extends '("/opt/ros/humble/")))))
 
 (use-package eglot
   :config
@@ -358,6 +371,8 @@
   (typst-ts-mode-highlight-raw-blocks-at-startup t))
 
 
+
+
 ;;(use-package ros
   ;;)
 
@@ -368,6 +383,7 @@
  ;; If there is more than one, they won't work right.
  '(flycheck-check-syntax-automatically
    '(save idle-change idle-buffer-switch new-line mode-enabled))
+ '(org-agenda-files '("~/Documents/agenda/diploma.org"))
  '(org-bullets-bullet-list '("" "󰦆" "" ""))
  '(package-selected-packages
    '(flycheck-rust docker-compose-mode yaml-mode json-mode csv-mode gradle-mode elcord use-package-ensure-system-package svg-lib smooth-scroll ox-reveal org-modern org-download ob-kotlin nyan-mode multiple-cursors material-theme magit kotlin-mode google-translate fireplace f engrave-faces dashboard company-box)))
