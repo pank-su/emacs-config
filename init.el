@@ -44,8 +44,15 @@
   )
 
 ;; Настройка темы и украшений
-(use-package material-theme)
-(load-theme 'material-light t)
+;; (use-package material-theme)
+;; (load-theme 'material-light t)
+
+(use-package apropospriate-theme
+  :ensure t
+  :config
+  ;;(load-theme 'apropospriate-dark t)
+  ;; or
+  (load-theme 'apropospriate-light t))
 
 (use-package nerd-icons
   :custom
@@ -101,19 +108,19 @@
   )
 )
 
-(use-package centaur-tabs
-  :demand
-  :config
-  (centaur-tabs-mode t)
-  (centaur-tabs-group-by-projectile-project)
-  :custom
-  (centaur-tabs-set-icons t)
-  ;;(centaur-tabs-style "wave")
-  (centaur-tabs-set-modified-marker t)
+;; (use-package centaur-tabs
+;;   :demand
+;;   :config
+;;   (centaur-tabs-mode t)
+;;   (centaur-tabs-group-by-projectile-project)
+;;   :custom
+;;   (centaur-tabs-set-icons t)
+;;   ;;(centaur-tabs-style "wave")
+;;   (centaur-tabs-set-modified-marker t)
 
-  :bind
-  ("C-<prior>" . centaur-tabs-backward)
-  ("C-<next>" . centaur-tabs-forward))
+;;   :bind
+;;   ("C-<prior>" . centaur-tabs-backward)
+;;   ("C-<next>" . centaur-tabs-forward))
 
 
 
@@ -233,7 +240,12 @@
   )
 
 
+(require 'printing)
 
+(setq ps-multibyte-buffer :bdf-font)
+(setq bdf-directory-list "/usr/share/emacs/fonts/bdf")
+
+ 
 ;; (setq org-latex-image-default-option '(("float" "wrap")))
 
 
@@ -277,6 +289,8 @@
 
 ;; Остальные полезные библиотеки
 (use-package magit)
+(use-package forge)
+
 (use-package smooth-scroll)
 (use-package nyan-mode)
 (use-package svg-lib)
@@ -323,11 +337,23 @@
 (use-package selectrum
   :config (selectrum-mode +1))
 
+
 (use-package treemacs
   :config (treemacs-project-follow-mode))
 
 (use-package treemacs-projectile
   :config (setq projectile-switch-project-action #'treemacs-add-and-display-current-project-exclusively))
+
+
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
+
+(use-package treemacs-tab-bar
+  :after (treemacs)
+  :ensure t
+  :config (treemacs-set-scope-type 'Tabs))
+
 
 (use-package yasnippet
   :config
@@ -356,6 +382,7 @@
   )
 
 
+
 (add-to-list 'treesit-language-source-alist
              '(typst "https://github.com/uben0/tree-sitter-typst"))
 (treesit-install-language-grammar 'typst)
@@ -371,8 +398,6 @@
   (typst-ts-mode-highlight-raw-blocks-at-startup t))
 
 
-
-
 ;;(use-package ros
   ;;)
 
@@ -386,7 +411,8 @@
  '(org-agenda-files '("~/Documents/agenda/diploma.org"))
  '(org-bullets-bullet-list '("" "󰦆" "" ""))
  '(package-selected-packages
-   '(flycheck-rust docker-compose-mode yaml-mode json-mode csv-mode gradle-mode elcord use-package-ensure-system-package svg-lib smooth-scroll ox-reveal org-modern org-download ob-kotlin nyan-mode multiple-cursors material-theme magit kotlin-mode google-translate fireplace f engrave-faces dashboard company-box)))
+   '(poetry flycheck-rust docker-compose-mode yaml-mode json-mode csv-mode gradle-mode elcord use-package-ensure-system-package svg-lib smooth-scroll ox-reveal org-modern org-download ob-kotlin nyan-mode multiple-cursors material-theme magit kotlin-mode google-translate fireplace f engrave-faces dashboard company-box))
+ '(tab-bar-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
